@@ -83,7 +83,7 @@
   <!-- end of cards -->
 
   <!-- tables -->
-  <section>
+  <!-- <section>
     <div class="container-fluid">
       <div class="row mb-5">
         <div class="col-xl-10 col-lg-9 col-md-8 ml-auto">
@@ -139,7 +139,7 @@
                 </tbody>
               </table>
 
-              <!-- pagination -->
+       ------ pagination ----------
               <nav>
                 <ul class="pagination justify-content-center">
                   <li class="page-item">
@@ -169,7 +169,7 @@
                   </li>
                 </ul>
               </nav>
-              <!-- end of pagination -->
+              -- end of pagination --
 
             </div>
             <div class="col-xl-6 col-12">
@@ -229,7 +229,7 @@
                   </tr>
                 </tbody>
               </table>
-              <!-- pagination -->
+              -- pagination --
               <nav>
                 <ul class="pagination justify-content-center">
                   <li class="page-item">
@@ -259,16 +259,16 @@
                   </li>
                 </ul>
               </nav>
-              <!-- end of pagination -->
+              -- end of pagination --
             </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
-  <!-- end of tables -->
+  </section> 
+  -- end of tables --
 
-  <!-- progress / task list -->
+  -- progress / task list --
   <section>
     <div class="container-fluid">
       <div class="row">
@@ -401,9 +401,9 @@
       </div>
     </div>
   </section>
-  <!-- end of progress / task list -->
+  -- end of progress / task list --
 
-  <!-- activities / quick post -->
+  -- activities / quick post --
   <section>
     <div class="container-fluid">
       <div class="row">
@@ -562,5 +562,5 @@
       </div>
     </div>
   </section>
-  <!-- end of activities / quick post -->
+-- end of activities / quick post -->
   @stop

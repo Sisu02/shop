@@ -100,9 +100,6 @@
             <div class="col-lg-6 text-center">
               <ul class="list-inline">
                 <li class="list-inline-item mr-2">
-                  <a href="#" class="text-dark">CodeAndCreate</a>
-                </li>
-                <li class="list-inline-item mr-2">
                   <a href="#" class="text-dark">About</a>
                 </li>
                 <li class="list-inline-item mr-2">
@@ -114,8 +111,9 @@
               </ul>
             </div>
             <div class="col-lg-6 text-center">
-              <p>&copy; 2018 Copyright. Made With <i class="fas fa-heart text-danger"></i> by <span
-                  class="text-success">CodeAndCreate</span></p>
+              <p>&copy; 
+                {{date('Y')}} Copyright. Made With <i class="fas fa-heart text-danger"></i> by <span
+                  class="text-success">Developer</span></p>
             </div>
           </div>
         </div>
