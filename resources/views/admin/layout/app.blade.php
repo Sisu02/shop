@@ -35,24 +35,35 @@
               <a href="#" class="text-white">  {{$user->name}}</a>
             </div>
             <ul class="navbar-nav flex-column mt-4">
-              <li class="nav-item"><a href="#" class="nav-link text-white p-3 mb-2 current"><i
-                    class="fas fa-home text-light fa-lg mr-3"></i>Dashboard</a></li>
-              <li class="nav-item"><a href="#" class="nav-link text-white p-3 mb-2 sidebar-link"><i
-                    class="fas fa-user text-light fa-lg mr-3"></i>Profile</a></li>
-              <!-- <li class="nav-item"><a href="#" class="nav-link text-white p-3 mb-2 sidebar-link"><i
-                    class="fas fa-envelope text-light fa-lg mr-3"></i>Inbox</a></li> -->
-              <li class="nav-item"><a href="#" class="nav-link text-white p-3 mb-2 sidebar-link"><i
-                    class="fas fa-shopping-cart text-light fa-lg mr-3"></i>Sales</a></li>
-              <!-- <li class="nav-item"><a href="#" class="nav-link text-white p-3 mb-2 sidebar-link"><i
-                    class="fas fa-chart-line text-light fa-lg mr-3"></i>Analytics</a></li> -->
-              <!-- <li class="nav-item"><a href="#" class="nav-link text-white p-3 mb-2 sidebar-link"><i
-                    class="fas fa-chart-bar text-light fa-lg mr-3"></i>Charts</a></li> -->
+   <!-- Dashboard Link -->
+<li class="nav-item">
+    <a href="{{ route('dashboard') }}" class="nav-link text-white p-3 mb-2 {{ request()->routeIs('dashboard') ? 'current' : '' }}">
+        <i class="fas fa-home text-light fa-lg mr-3"></i> Dashboard
+    </a>
+</li>
+
+<!-- Categories Link -->
+<li class="nav-item">
+    <a href="{{ route('categories') }}" class="nav-link text-white p-3 mb-2 sidebar-link {{ request()->routeIs('categories') ? 'current' : '' }}">
+        <i class="fas fa-th-large text-light fa-lg mr-3"></i> Categories   <i class="fas fa-chevron-circle-down text-end custom-arrow"></i>
+    </a>
+ 
+    <ul class="submenu-custom">
+      <li class="nav-item">
+    <a href="{{ route('subcategories') }}" class="nav-link text-white p-3 mb-2 sidebar-link {{ request()->routeIs('subcategories') ? 'current' : '' }}">
+        <i class="fas fa-th text-light fa-lg mr-3"></i>Sub Categories
+    </a>
+</li>
+</ul>
+</li>
               <li class="nav-item"><a href="#" class="nav-link text-white p-3 mb-2 sidebar-link"><i
                     class="fas fa-table text-light fa-lg mr-3"></i>Tables</a></li>
               <li class="nav-item"><a href="#" class="nav-link text-white p-3 mb-2 sidebar-link"><i
                     class="fas fa-wrench text-light fa-lg mr-3"></i>Settings</a></li>
               <li class="nav-item"><a href="#" class="nav-link text-white p-3 mb-2 sidebar-link"><i
                     class="fas fa-file-alt text-light fa-lg mr-3"></i>Documentation</a></li>
+              <li class="nav-item"><a href="#" class="nav-link text-white p-3 mb-2 sidebar-link"><i
+              class="fas fa-user text-light fa-lg mr-3"></i>Profile</a></li>
             </ul>
           </div>
           <!-- end of sidebar -->
@@ -61,7 +72,7 @@
           <div class="col-xl-10 col-lg-9 col-md-8 ml-auto bg-dark fixed-top py-2 top-navbar">
             <div class="row align-items-center">
               <div class="col-md-4">
-                <h4 class="text-light text-uppercase mb-0">Dashboard</h4>
+                <h4 class="text-light text-uppercase mb-0">@yield('title')</h4>
               </div>
               <div class="col-md-5">
                 <form>
@@ -74,10 +85,10 @@
               </div>
               <div class="col-md-3">
                 <ul class="navbar-nav">
-                  <li class="nav-item icon-parent"><a href="#" class="nav-link icon-bullet"><i
+                  <!-- <li class="nav-item icon-parent"><a href="#" class="nav-link icon-bullet"><i
                         class="fas fa-comments text-muted fa-lg"></i></a></li>
                   <li class="nav-item icon-parent"><a href="#" class="nav-link icon-bullet"><i
-                        class="fas fa-bell text-muted fa-lg"></i></a></li>
+                        class="fas fa-bell text-muted fa-lg"></i></a></li> -->
                   <li class="nav-item ml-md-auto"><a href="/logout" class="nav-link"><i class="fas fa-sign-out-alt text-danger fa-lg"></i></a></li>
                 </ul>
               </div>

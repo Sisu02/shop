@@ -1,6 +1,8 @@
   
   @extends('admin.layout.app')
+  @section('title', 'Dashboard');
   @section('content')
+
   <!-- cards -->
   <section>
     <div class="container-fluid">
