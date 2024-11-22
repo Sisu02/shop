@@ -84,7 +84,28 @@ body {
   background-color: #f44336;
   border-radius: 50%;
 }
-
+.submenu-custom .nav-item{
+  font-size: 14px;
+}
+.preview-img {
+  position: relative;
+  display: inline-block;
+  margin: 10px;
+}
+.preview-img img {
+  max-width: 100px;
+  max-height: 100px;
+}
+.preview-img .remove-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: rgba(255, 0, 0, 0.6);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
 @media (max-width: 768px) {
   .sidebar {
     position: static;
@@ -102,6 +123,18 @@ body {
 .card-common {
   box-shadow: 1px 2px 5px #999;
   transition: all .4s;
+}
+.cat-img {
+  height: 50px;
+  width: 50px;
+  object-fit: cover;
+}
+#output{
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
+  margin-top: 29px;
+  border: 1px solid;
 }
 
 .card-common:hover {

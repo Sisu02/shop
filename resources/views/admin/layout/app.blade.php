@@ -13,6 +13,7 @@
   </script>
   <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
   <link rel="stylesheet" href="{{asset('admin/css/style.css')}}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <title>Admin Dashboard</title>
 </head>
 
@@ -55,6 +56,12 @@
     </a>
 </li>
 </ul>
+</li>
+
+<!-- product -->
+<li class="nav-item">
+    <a href="{{ route('products') }}" class="nav-link text-white p-3 mb-2 sidebar-link {{ request()->routeIs('products') ? 'current' : '' }}">
+        <i class="fas fa-th-large text-light fa-lg mr-3"></i> Products</a>
 </li>
               <li class="nav-item"><a href="#" class="nav-link text-white p-3 mb-2 sidebar-link"><i
                     class="fas fa-table text-light fa-lg mr-3"></i>Tables</a></li>
