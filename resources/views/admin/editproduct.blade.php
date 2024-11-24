@@ -29,30 +29,30 @@
                                         </ul>
                                     </div>
                                 @endif
-
+                                {{$current}}
                                 <form action="/addproduct" method="post" enctype="multipart/form-data">
                                     @csrf
                                     <div class="custom-form">
                                         <div class="form-group">
                                             <label for="name">Product Name</label>
-                                            <input type="text" class="form-control" name="name" id="name" value="{{old('name')}}" placeholder="Enter product name">
+                                            <input type="text" class="form-control" name="name" id="name" value="" placeholder="Enter product name">
                                         </div>
 
                                         <div class="form-group">
                                             <label for="description">Description</label>
-                                            <textarea class="form-control" name="description" id="description" rows="3" placeholder="Enter product description">{{old('description')}}</textarea>
+                                            <textarea class="form-control" name="description" id="description" rows="3" placeholder="Enter product description">{{$current->description}}</textarea>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="price">Price</label>
-                                            <input type="number" class="form-control" name="price"  value="{{old('price')}}"   id="price" placeholder="Enter price">
+                                            <input type="number" class="form-control" name="price"  value="{{$current->price}}"   id="price" placeholder="Enter price">
                                         </div>
 
                                         <div class="form-group">
                                             <label for="stock">Stock</label>
                                             <select class="form-control" id="stock" name="stock">
-                                                            <option value="1" @if(old('stock') == 1) selected @endif>instock</option>
-                                                            <option value="0" @if(old('stock') == 0) selected @endif>out of stock</option>
+                                                            <option value="1" @if($current->stock == 1) selected @endif>instock</option>
+                                                            <option value="0" @if($current->stock == 0) selected @endif>out of stock</option>
                                                         </select>
 
                                         </div>
@@ -62,7 +62,7 @@
                                             <select class="form-control" id="category_id" name="category">
                                                 <!-- Example categories, replace with dynamic categories from your backend -->
                                                @foreach($cat as $item)
-                                                <option value="{{$item->id}}">{{$item->name}}</option>
+                                                <option value="{{$item->id}}"  @if($current->category_id == 1) selected @endif>{{$item->name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>

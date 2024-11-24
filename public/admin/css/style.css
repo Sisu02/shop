@@ -106,6 +106,18 @@ body {
   border-radius: 50%;
   cursor: pointer;
 }
+.product-img {
+  height: 50px;
+  width: 50px;
+  object-fit: cover;
+  object-position: top;
+  border:1px solid #000;
+}
+section {
+  padding: 50px 0px;
+  padding-top: 20px;
+}
+
 @media (max-width: 768px) {
   .sidebar {
     position: static;
@@ -168,4 +180,10 @@ body {
   border-radius: 7px;
   box-shadow: 2px 5px 10px #111;
   transition: all .3s;
+}
+footer {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  background: #d4f0f0;
 }

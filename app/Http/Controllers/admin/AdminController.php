@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Redirect;
 
 class AdminController extends Controller
 {
@@ -37,7 +37,12 @@ class AdminController extends Controller
                 // dd($request);
                 $cred=$request->only('email','password');
                 if (Auth::attempt($cred)) {
-                    return redirect('/dashboard')->with('success', 'Login Success');
+                    if (Auth::user()->role == 1) { // Assuming role 1 is the required role
+                        return redirect('/dashboard')->with('success', 'Login Success');
+                    }
+                    else{
+                        return Redirect::route('login')->withInput()->with('error', 'You need to permission for access.');
+                    }
                     }
                     return back()->with('error', 'Email or Password incorrect');
     }

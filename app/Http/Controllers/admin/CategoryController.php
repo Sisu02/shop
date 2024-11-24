@@ -12,36 +12,18 @@ use Illuminate\Support\Facades\Redirect;
 class CategoryController extends Controller
 {
     public function getcategory(){
-            if(Auth::check())
-            {
             $categories = Category::paginate(5);
             // return view ('categories')->with(compact('categories'));
-                return view('admin.categories', ['user' => auth()->user()])->with(compact('categories'));
-            }
-            else{
-                return Redirect::route('login')->withInput()->with('error', 'Please Login to access restricted area.');
-            }
-        
+                return view('admin.categories', ['user' => auth()->user()])->with(compact('categories'));     
     }
     public function addcategory(){
-        if(Auth::check())
-        {
             return view('admin.addcategory', ['user' => auth()->user()]);
-        }
-        else{
-            return Redirect::route('login')->withInput()->with('error', 'Please Login to access restricted area.');
-        }
     }
     public function getsubcategory(){
-        if(Auth::check())
-        {
+
             $subcategories =Subcategory::with('category')->paginate(5);
             // dd($subcategories);
             return view('admin.subcategories', ['user' => auth()->user(),'subcat'=>$subcategories]);
-        }
-        else{
-            return Redirect::route('login')->withInput()->with('error', 'Please Login to access restricted area.');
-        }
         
     }
     public function addcate(Request $request)
@@ -87,8 +69,7 @@ class CategoryController extends Controller
     }
     public function updatecategory(Request $request,$id)
     {
-        if(Auth::check())
-        {
+
         $request->validate([
             'cname' => 'required|string|min:3',
             'cimg' => 'image',
@@ -112,16 +93,11 @@ class CategoryController extends Controller
             $category->update([ 'name' => $request->cname, 'description' => $request->description, ]); 
             return redirect()->route('editcategory', $id)->with('success', 'Category updated successfully.'); 
         }
-    }
-    else{
-        return Redirect::route('login')->withInput()->with('error', 'Please Login to access restricted area.');
-    }
 
     }
     public function deletecategory($id){
               
-        if(Auth::check())
-        {
+
             // $cat = Category::where('id', $id)->firstOrFail(); 
             // return view('admin.editcategory', ['user' => auth()->user(), 'category'=>$cat]);
             // dd($id);
@@ -131,10 +107,6 @@ class CategoryController extends Controller
             $category->delete(); 
             // return Redirect::route('deletecategory',$id)->with('success', 'Category deleted successfully.');
             return Redirect::route('categories')->withInput()->with('success', 'Category deleted successfully.');
-        }
-        else{
-            return Redirect::route('login')->withInput()->with('error', 'Please Login to access restricted area.');
-        }
     }
     public function addsubcategory(){
 
@@ -170,18 +142,13 @@ class CategoryController extends Controller
 
     }
     public function editsubcategory($id){
-        // dd($id);
-        if(Auth::check())
-        {
+
             $subcat = Subcategory::where('id', $id)->firstOrFail(); 
             // dd($subcat);
             $categories = Category::all();
             return view('admin.editsubcategory', ['user' => auth()->user(),'cat'=>$categories,'subcat'=>$subcat]);
             // return Redirect::route('editsubcategories',['user' => auth()->user(),'cat'=>$categories])->withInput()->with('success', 'Category deleted successfully.');
-        }
-        else{
-            return Redirect::route('login')->withInput()->with('error', 'Please Login to access restricted area.');
-        }
+    
     }
     public function updatesubcategory(Request $request,$id)
     {
@@ -217,20 +184,11 @@ class CategoryController extends Controller
 }
 public function deletesubcategory($id){
               
-    if(Auth::check())
-    {
-        // $cat = Category::where('id', $id)->firstOrFail(); 
-        // return view('admin.editcategory', ['user' => auth()->user(), 'category'=>$cat]);
-        // dd($id);
-        // \Log::info($request->all());
+
         $subcategory = Subcategory::findOrFail($id);
         File::delete(public_path('images/' . $subcategory->image));
         $subcategory->delete(); 
         // return Redirect::route('deletecategory',$id)->with('success', 'Category deleted successfully.');
         return Redirect::route('subcategories')->withInput()->with('success', 'Subcategory deleted successfully.');
     }
-    else{
-        return Redirect::route('login')->withInput()->with('error', 'Please Login to access restricted area.');
-    }
-}
 }

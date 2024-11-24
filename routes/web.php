@@ -5,13 +5,16 @@ use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\ProductController;
+use App\Http\Middleware\LoginCheck;
 
 Route::get('/register',[AdminController::class,'register']);
 Route::post('/register',[AdminController::class,'registeruser']);
 Route::get('/login',[AdminController::class,'login']);
 Route::post('/login',[AdminController::class,'checklogin'])->name('login');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::middleware([LoginCheck::class])->group(function(){
+    
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/logout',[AdminController::class,'logout']);
 Route::get('/categories', [CategoryController::class, 'getcategory'])->name('categories');
 Route::get('/addcategory', [CategoryController::class, 'addcategory']);
@@ -37,5 +40,11 @@ Route::get('/addproducts', [ProductController::class, 'addproducts'])->name('add
 
 Route::get('/get-subcategories/{categoryId}', [ProductController::class, 'getSubcategories']);
 Route::post('/addproduct',[ProductController::class,'addproduct']);
+
+Route::delete('/deleteproduct/{id}',[ProductController::class,'deleteproduct']);
+Route::get('/editproduct/{id}',[ProductController::class,'editproduct']);
+
+});
+
 
 
