@@ -42,7 +42,9 @@ Route::get('/get-subcategories/{categoryId}', [ProductController::class, 'getSub
 Route::post('/addproduct',[ProductController::class,'addproduct']);
 
 Route::delete('/deleteproduct/{id}',[ProductController::class,'deleteproduct']);
-Route::get('/editproduct/{id}',[ProductController::class,'editproduct']);
+Route::get('/editproduct/{id}',[ProductController::class,'editproduct'])->name('editproduct');
+Route::post('/updateproduct/{id}',[ProductController::class,'updateproduct']);
+
 
 });
 

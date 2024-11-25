@@ -29,13 +29,13 @@
                                         </ul>
                                     </div>
                                 @endif
-                                {{$current}}
-                                <form action="/addproduct" method="post" enctype="multipart/form-data">
+                                <!-- {{$current}} -->
+                                <form action="/updateproduct/{{$current->id}}" method="post" enctype="multipart/form-data">
                                     @csrf
                                     <div class="custom-form">
                                         <div class="form-group">
                                             <label for="name">Product Name</label>
-                                            <input type="text" class="form-control" name="name" id="name" value="" placeholder="Enter product name">
+                                            <input type="text" class="form-control" name="name" id="name" value="{{$current->name}}" placeholder="Enter product name">
                                         </div>
 
                                         <div class="form-group">
@@ -62,7 +62,7 @@
                                             <select class="form-control" id="category_id" name="category">
                                                 <!-- Example categories, replace with dynamic categories from your backend -->
                                                @foreach($cat as $item)
-                                                <option value="{{$item->id}}"  @if($current->category_id == 1) selected @endif>{{$item->name}}</option>
+                                                <option value="{{$item->id}}" @if($current->category_id==$item->id) selected @endif>{{$item->name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -70,19 +70,30 @@
                                             <label for="subcategory_id">Subcategory</label>
                                             <select class="form-control" name="subcategory" id="subcategory_id">
                                                 <!-- Example categories, replace with dynamic categories from your backend -->
+                                                 @foreach($subcat as $subcate)
+                                                 <option value="{{$subcate->id}}" @if($current->subcategory_id==$subcate->id) selected @endif>{{$subcate->name}}</option>
+                                                 @endforeach
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label for="gallery_images">Feature Image</label>
+                                            <label for="f_image">Feature Image</label>
                                             <input type="file" class="form-control-file" id="f_image" name="f_image">
+                                            <input type="hidden" name="fimage" value="{{$current->fimage}}">
                                         </div>
                                         <div class="form-group">
                                             <label for="gallery_images">Gallery Images</label>
                                             <input type="file" class="form-control-file" id="gallery_images" name="gallery_images[]" multiple>
                                         </div>
 
-                                        <div id="preview" class="d-flex flex-wrap"></div>
-
+                                        <div id="preview" class="d-flex flex-wrap">
+                                        @foreach(explode('|',$current->gimage) as $img)
+                                        <div class="preview-img">
+                                           <input type="hidden" name="gmg[]" value="{{$img}}">
+                                        <img src="{{asset('images').'/'.$img}}" alt="">
+                                        <button type="button" class="remove-btn" onclick="parentRemove(this)">×</button>
+                                        </div>
+                                            @endforeach
+                                        </div>
                                         <button type="submit" class="btn btn-primary">Add Product</button>
                                     </div>
                                 </form>
@@ -99,32 +110,40 @@
 <script>
         const categorySelect = document.getElementById('category_id');
         const subcategorySelect = document.getElementById('subcategory_id');
-document.getElementById('gallery_images').addEventListener('change', function(event) {
-    let files = Array.from(event.target.files);
+        document.addEventListener('DOMContentLoaded', function () {
+    const existingImages = Array.from(document.querySelectorAll('#preview .preview-img'));
     const preview = document.getElementById('preview');
-    preview.innerHTML = ''; // Clear any existing previews
+    const fileInput = document.getElementById('gallery_images');
+    let newFiles = [];
 
     function updateFiles() {
         const dataTransfer = new DataTransfer();
-        files.forEach(file => dataTransfer.items.add(file));
-        document.getElementById('gallery_images').files = dataTransfer.files;
+        newFiles.forEach(file => dataTransfer.items.add(file));
+        fileInput.files = dataTransfer.files;
     }
 
     function renderPreview() {
         preview.innerHTML = ''; // Clear previews
-        files.forEach((file, index) => {
+
+        // Render existing images
+        existingImages.forEach(imgContainer => {
+            preview.appendChild(imgContainer);
+        });
+
+        // Render new files
+        newFiles.forEach((file, index) => {
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 const imgContainer = document.createElement('div');
                 imgContainer.classList.add('preview-img');
                 imgContainer.innerHTML = `
-                    <img src="${e.target.result}" alt="Image ${index + 1}">
+                    <img src="${e.target.result}" alt="New Image ${index + 1}">
                     <button type="button" class="remove-btn" data-index="${index}">&times;</button>
                 `;
                 preview.appendChild(imgContainer);
 
-                imgContainer.querySelector('.remove-btn').addEventListener('click', function() {
-                    files.splice(index, 1); // Remove the file from the array
+                imgContainer.querySelector('.remove-btn').addEventListener('click', function () {
+                    newFiles.splice(index, 1); // Remove the file from the array
                     renderPreview(); // Re-render the preview
                     updateFiles(); // Update the input field with remaining files
                 });
@@ -133,9 +152,27 @@ document.getElementById('gallery_images').addEventListener('change', function(ev
         });
     }
 
-    renderPreview();
-    updateFiles();
+    // Handle file input change
+    fileInput.addEventListener('change', function (event) {
+        const selectedFiles = Array.from(event.target.files);
+        newFiles = [...newFiles, ...selectedFiles]; // Append new files
+        renderPreview();
+        updateFiles();
+    });
+
+    // Remove existing image
+    preview.addEventListener('click', function (e) {
+        if (e.target.classList.contains('remove-btn') && e.target.dataset.path) {
+            const container = e.target.closest('.preview-img');
+            container.remove();
+            // Optionally, handle removal of the image from the server or form data
+        }
+    });
+
+    renderPreview(); // Initial rendering
 });
+
+
 categorySelect.addEventListener('change', function() {
         const categoryId = this.value;
         subcategorySelect.innerHTML = '<option value="">Select Subcategory</option>'; // Clear subcategories
@@ -157,5 +194,12 @@ categorySelect.addEventListener('change', function() {
         }
 
 });
+function parentRemove(button) {
+    const parentDiv = button.closest('.preview-img'); 
+    if (parentDiv) {
+        parentDiv.remove(); 
+    }
+}
+
 </script>
 @endsection

@@ -91,10 +91,13 @@ body {
   position: relative;
   display: inline-block;
   margin: 10px;
+  border: 1px solid #000;
 }
 .preview-img img {
-  max-width: 100px;
-  max-height: 100px;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  object-position: top;
 }
 .preview-img .remove-btn {
   position: absolute;
@@ -105,6 +108,11 @@ body {
   border: none;
   border-radius: 50%;
   cursor: pointer;
+  height: 20px;
+  width: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .product-img {
   height: 50px;

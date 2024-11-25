@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Subcategory;
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
@@ -80,8 +81,54 @@ class ProductController extends Controller
     public function editproduct($id){
         // dd($id);            
             $product = \App\Models\Product::findOrFail($id);
+           $cat_id=$product->category_id;
+            $specific_subcat=\App\Models\Subcategory::where('category_id',$cat_id)->get();
+            // dd($specific_subcat);
             $categories = Category::all();
             $subcategories = Subcategory::all();
-            return view('admin.editproduct', ['user' => auth()->user(),'cat'=>$categories,'subcat'=>$subcategories,'current'=>$product]);
+            return view('admin.editproduct', ['user' => auth()->user(),'cat'=>$categories,'subcat'=>$specific_subcat,'current'=>$product]);
+    }
+    public function updateproduct(request $request,$id){
+        $featured=0;
+        if($request->f_image){
+            $file=$request->f_image;
+            $fimgname = time().'.'.$file->getClientOriginalExtension();
+            $file->move(public_path('images'),$fimgname);
+            $featured= $fimgname;
+        }
+        else{
+            $featured= $request->fimage;
+        }
+
+        $arr=$request->gmg;
+        // print_r($arr);
+        if($request->gallery_images){
+            $gfile=$request->gallery_images;
+            // $g_array=array[];
+            foreach($gfile as $index => $item){
+                $gfile= time() . '_' . $index . '_' . uniqid() . '.' . $item->getClientOriginalExtension();
+                $item->move(public_path('images'),$gfile);
+                $arr[]=$gfile;
+            }
+            // print_r($arr);
+            $newgal=implode('|',$arr);
+            // echo $newgal;
+        }
+        else{
+            $newgal=implode('|',$arr);
+        }
+        $product = Product::findOrFail($id); 
+        $product->update([
+            'category_id'=>$request->category,
+            'subcategory_id'=>$request->subcategory,
+            'name'=>$request->name,
+            'price'=>$request->price,
+            'stock'=>$request->stock,
+            'description'=>$request->description,
+            'fimage'=>$featured,
+            'gimage'=>$newgal,
+        ]);
+        return redirect()->route('editproduct', $id)->with('success', 'Product updated successfully.');
+        
     }
 }
