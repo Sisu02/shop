@@ -114,6 +114,9 @@ body {
   justify-content: center;
   align-items: center;
 }
+.hide {
+  display: none;
+}
 .product-img {
   height: 50px;
   width: 50px;

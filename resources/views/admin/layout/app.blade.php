@@ -5,15 +5,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="title icon" href="images/title-img.png">
-  <!-- Bootstrap CSS -->
+  
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/all.js"
-    integrity="sha384-xymdQtn1n3lH2wcu0qhcdaOpQwyoarkgLVxC/wZ5q7h9gHtxICrpcaSUfygqZGOe" crossorigin="anonymous">
-  </script>
-  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <link rel="stylesheet" href="{{asset('admin/bootstrap/css/bootstrap.min.css')}}">
   <link rel="stylesheet" href="{{asset('admin/css/style.css')}}">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="{{asset('admin/fontawesome/css/all.css')}}">
+  <script src="{{asset('admin/js/jquery-3.7.1.min.js')}}"></script>
   <title>Admin Dashboard</title>
 </head>
 
@@ -32,8 +31,11 @@
             <a href="#"
               class="navbar-brand text-white d-block mx-auto text-center py-3 mb-4 bottom-border">Admin</a>
             <div class="bottom-border pb-3 custom-profile-img">
-              <img src="{{asset('admin/images/nophoto.png')}}" width="50" class="rounded-circle mr-3">
-              <a href="#" class="text-white">  {{$user->name}}</a>
+            @if(Auth::check())
+        <img src="{{asset('admin/images/nophoto.png')}}" width="50" class="rounded-circle mr-3">
+        <a href="#" class="text-white">   {{ Auth::user()->name }}</a>
+            @endif
+
             </div>
             <ul class="navbar-nav flex-column mt-4">
    <!-- Dashboard Link -->
@@ -61,12 +63,12 @@
 <!-- product -->
 <li class="nav-item">
     <a href="{{ route('products') }}" class="nav-link text-white p-3 mb-2 sidebar-link {{ request()->routeIs('products') ? 'current' : '' }}">
-        <i class="fas fa-th-large text-light fa-lg mr-3"></i> Products</a>
+    <i class="fa fa-cube fa-lg mr-3" aria-hidden="true"></i>
+    Products</a>
 </li>
-              <li class="nav-item"><a href="#" class="nav-link text-white p-3 mb-2 sidebar-link"><i
-                    class="fas fa-table text-light fa-lg mr-3"></i>Tables</a></li>
-              <li class="nav-item"><a href="#" class="nav-link text-white p-3 mb-2 sidebar-link"><i
-                    class="fas fa-wrench text-light fa-lg mr-3"></i>Settings</a></li>
+<li class="nav-item"><a href="{{ route('coupons') }}" class="nav-link text-white p-3 mb-2 sidebar-link {{ request()->routeIs('coupons') ? 'current' : '' }}"><i class="fa-solid fa-ticket mr-3"></i>
+Coupons</a></li>
+<li class="nav-item"><a href="{{ route('plans') }}" class="nav-link text-white p-3 mb-2 sidebar-link {{ request()->routeIs('plans') ? 'current' : '' }}"><i class="fa-solid fa-tags mr-2"></i>plans</a></li>
               <li class="nav-item"><a href="#" class="nav-link text-white p-3 mb-2 sidebar-link"><i
                     class="fas fa-file-alt text-light fa-lg mr-3"></i>Documentation</a></li>
               <li class="nav-item"><a href="#" class="nav-link text-white p-3 mb-2 sidebar-link"><i
@@ -96,7 +98,7 @@
                         class="fas fa-comments text-muted fa-lg"></i></a></li>
                   <li class="nav-item icon-parent"><a href="#" class="nav-link icon-bullet"><i
                         class="fas fa-bell text-muted fa-lg"></i></a></li> -->
-                  <li class="nav-item ml-md-auto"><a href="/logout" class="nav-link"><i class="fas fa-sign-out-alt text-danger fa-lg"></i></a></li>
+                  <li class="nav-item ml-md-auto"><a href="/logout" class="nav-link"><i class="fa-solid fa-power-off"></i></a></li>
                 </ul>
               </div>
             </div>
@@ -147,8 +149,8 @@
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
     integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
   </script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+  <script src="{{asset('admin/bootstrap/js/bootstrap.min.js')}}"></script>
+
   </script>
   <script src="{{asset('admin/js/script.js')}}"></script>
 </body>

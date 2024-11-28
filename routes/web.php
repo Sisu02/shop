@@ -5,6 +5,8 @@ use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\ProductController;
+use App\Http\Controllers\admin\CouponController;
+use App\Http\Controllers\admin\PlanController;
 use App\Http\Middleware\LoginCheck;
 
 Route::get('/register',[AdminController::class,'register']);
@@ -44,6 +46,19 @@ Route::post('/addproduct',[ProductController::class,'addproduct']);
 Route::delete('/deleteproduct/{id}',[ProductController::class,'deleteproduct']);
 Route::get('/editproduct/{id}',[ProductController::class,'editproduct'])->name('editproduct');
 Route::post('/updateproduct/{id}',[ProductController::class,'updateproduct']);
+
+Route::get('/coupons', [CouponController::class, 'index'])->name('coupons');
+Route::get('/addcoupons', [CouponController::class, 'addcoupon']);
+Route::post('/addcoupon', [CouponController::class, 'couponset']);
+Route::get('/editcoupon/{id}', [CouponController::class, 'editcoupon'])->name('editcoupon');
+
+Route::post('/updatecoupon/{id}', [CouponController::class, 'updatecoupon']);
+Route::delete('/deletecoupon/{id}',[CouponController::class,'deletecoupon']);
+
+Route::get('/plans',[PlanController::class,'index'])->name('plans');
+Route::get('/addplan',[PlanController::class,'addplans'])->name('addplans');
+
+Route::post('/insertplan',[PlanController::class,'insertplan']);
 
 
 });
