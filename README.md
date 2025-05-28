@@ -1,66 +1,88 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+add_shortcode('custom_coupon_form', 'custom_coupon_form_shortcode');
+function custom_coupon_form_shortcode() {
+    ob_start();
+    ?>
+    <form id="custom-coupon-form">
+        <input type="text" name="coupon_code" id="coupon_code" placeholder="Enter coupon code">
+        <button type="submit">Apply Coupon</button>
+        <button type="button" id="remove_coupon">Remove Coupon</button>
+        <div id="coupon-message"></div>
+    </form>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            $('#custom-coupon-form').on('submit', function(e) {
+                e.preventDefault();
+                var coupon = $('#coupon_code').val();
+                $.ajax({
+                    url: '<?php echo admin_url("admin-ajax.php"); ?>',
+                    type: 'POST',
+                    data: {
+                        action: 'apply_custom_coupon',
+                        coupon_code: coupon
+                    },
+                    success: function(response) {
+                        $('#coupon-message').html(response.data.message);
+                        if (response.success) {
+                            location.reload(); // to update cart totals
+                        }
+                    }
+                });
+            });
 
-## About Laravel
+            $('#remove_coupon').on('click', function() {
+                $.ajax({
+                    url: '<?php echo admin_url("admin-ajax.php"); ?>',
+                    type: 'POST',
+                    data: {
+                        action: 'remove_custom_coupon'
+                    },
+                    success: function(response) {
+                        $('#coupon-message').html(response.data.message);
+                        if (response.success) {
+                            location.reload(); // to update cart totals
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+    <?php
+    return ob_get_clean();
+}
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+_-------
 
-## Learning Laravel
+add_action('wp_ajax_apply_custom_coupon', 'apply_custom_coupon');
+add_action('wp_ajax_nopriv_apply_custom_coupon', 'apply_custom_coupon');
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+function apply_custom_coupon() {
+    $coupon_code = sanitize_text_field($_POST['coupon_code']);
+    if (WC()->cart->has_discount($coupon_code)) {
+        wp_send_json_error(['message' => 'Coupon already applied.']);
+    }
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+    $applied = WC()->cart->apply_coupon($coupon_code);
+    if ($applied) {
+        wp_send_json_success(['message' => 'Coupon applied successfully!']);
+    } else {
+        wp_send_json_error(['message' => 'Invalid or expired coupon.']);
+    }
+}
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+add_action('wp_ajax_remove_custom_coupon', 'remove_custom_coupon');
+add_action('wp_ajax_nopriv_remove_custom_coupon', 'remove_custom_coupon');
 
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+function remove_custom_coupon() {
+    $coupons = WC()->cart->get_applied_coupons();
+    if (!empty($coupons)) {
+        foreach ($coupons as $code) {
+            WC()->cart->remove_coupon($code);
+        }
+        wp_send_json_success(['message' => 'Coupon removed.']);
+    } else {
+        wp_send_json_error(['message' => 'No coupons to remove.']);
+    }
+}
